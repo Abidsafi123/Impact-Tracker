@@ -1,10 +1,10 @@
 import axios from "axios";
-const api_url = "http://localhost:3000/api/problems";
+const api_url = "http://localhost:5000/api/problems";
 
 export const getAllProblems = async () => {
     try {
         const response = await axios.get(api_url);
-        return response.data;
+        return response.data.problems;
     } catch (error) {
         console.error("Error fetching problems:", error);
         throw error;
@@ -35,16 +35,15 @@ export const createProblem = async (data) => {
     }
 }
 
-export const joinProblem = async (id, status) => {
+export const joinProblem = async (id, name) => {
     try {
-        await axios.post(`${api_url}/${id}/join`, { status });
+        const response = await axios.post(`${api_url}/${id}/join`, { name });
         return response.data;
     } catch (error) {
         console.error("Error joining problem:", error);
         throw error;
     }
 }
-
 
 export const addProblemUpdate = async (id, text) => {
     try {

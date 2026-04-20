@@ -7,22 +7,23 @@ import React, {useState, useEffect} from "react";
 const Homepage =  () => {
    const [problems, setProblems] = useState([]);
 
-   useEffect(() => {
-    const fetchProblems = async ()=> {
-       try {
-            
-        const data = await getAllProblems();
-        
-        if(data && Array.isArray(data)){
-          setProblems(data);
-        }
-        
-       } catch (error) {
-        console.error("Error fetching problems:", error);
-       }
+ useEffect(() => {
+  const fetchProblems = async () => {
+    try {
+      const data = await getAllProblems();
+
+       
+      if (data?.problems && Array.isArray(data.problems)) {
+        setProblems(data.problems);
+      }
+
+    } catch (error) {
+      console.error("Error fetching problems:", error);
     }
-    fetchProblems();
-   }, []);
+  };
+
+  fetchProblems();
+}, []);
 
    console.log("Fetched problems:", problems);
 
