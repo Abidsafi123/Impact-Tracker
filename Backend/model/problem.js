@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { memo } from "react";
+
 const updateSchema = new mongoose.Schema({
     title:{
         type:String,
