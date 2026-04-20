@@ -3,22 +3,18 @@ const api_url = "http://localhost:3000/api/problems";
 
 export const getAllProblems = async () => {
     try {
-        const response = await axios.get(`${api_url}`, {
-            cache: "no-store",
-        });
+        const response = await axios.get(api_url);
         return response.data;
     } catch (error) {
         console.error("Error fetching problems:", error);
         throw error;
     }
-}
+};
 
 
 export const getProblemById = async (id) => {
     try {
-        const response = await axios.get(`${api_url}/${id}`, {
-            cache: "no-store",
-        });
+        const response = await axios.get(`${api_url}/${id}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching problem:", error);

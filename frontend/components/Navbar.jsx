@@ -8,14 +8,14 @@ const Navbar = () => {
         <Link href="/" className="text-2xl font-bold">
           Impact Tracker
         </Link>
-      <div className="flex items-center gap-6 text-sm font-medium ">
-        <Link href="/" className="text-white hover:text-slate-200">
-          Home
-        </Link>
-        <Link href="/create" className="hover:text-blue-300 transition ">
-          Create Problem
-        </Link>
-      </div>
+        <div className="flex items-center gap-6 text-sm font-medium ">
+          <Link href="/" className="text-white hover:text-slate-200">
+            Home
+          </Link>
+          <Link href="/create" className="hover:text-blue-300 transition ">
+            Post a Problem
+          </Link>
+        </div>
       </div>
     </nav>
   );
