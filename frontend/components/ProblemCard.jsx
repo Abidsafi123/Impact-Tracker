@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const ProblemCard = () => {
+const ProblemCard = ({ problem }) => {
   const statusClasses = {
     pending: "bg-yellow-100 text-yellow-800",
     in_progress: "bg-blue-100 text-blue-800",
@@ -9,26 +9,26 @@ const ProblemCard = () => {
   };
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:shadow-md transition">
-      <h2 className="text-xl font-semibold text-slate-900">Problem Title</h2>
-
-      <p className="mt-3 text-slate-600 line-clamp-3">Problem descripion</p>
-
-      <p className="mt-3 text-sm text-slate-500">
-        <span className="font-semibold">Location: </span>
-        Problem Location
-      </p>
+      <h2 className="text-xl font-semibold text-slate-900">{problem.title}</h2>
+      <p className="mt-3 text-slate-600 line-clamp-3">{problem.description}</p>
+      {problem.location && (
+        <p className="mt-3 text-sm text-slate-500">
+          <span className="font-semibold">Location: </span>
+          {problem.location}
+        </p>
+      )}
 
       <div className="mt-4 flex items-center justify-between">
         <span
-          className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusClasses["pending"] || "bg-slate-100 text-slate-700"}`}
+          className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusClasses[problem.status] || "bg-slate-100 text-slate-700"}`}
         >
-          Pending
+          {problem.status}
         </span>
         <span className="text-sm text-slate-500">
-          problem members length: 3
+          {problem.members.length} members
         </span>
       </div>
-      <Link href={`/problems/${1}`}>
+      <Link href={`/problems/${problem._id}`}>
         <button className="w-full mt-5 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-medium transition">
           View Details
         </button>
