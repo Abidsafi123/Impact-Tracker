@@ -15,6 +15,7 @@ const Homepage =  () => {
        
       if (data?.problems && Array.isArray(data.problems)) {
         setProblems(data.problems);
+        console.log("Fetched problems:", data.problems);
       }
 
     } catch (error) {
