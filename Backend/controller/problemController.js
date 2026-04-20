@@ -49,3 +49,39 @@ export const getProblemById = async(req,res)=>{
         
     }
 }
+
+// create a problems
+
+export const createProblem = async(req,res)=>{
+    try {
+        const{title,description,location,members} = req.body
+        if(!title||!description){
+            return res.status(400).json({
+                success:false,
+                message:'title and description are required'
+            })
+        }
+        const problem = new problemModel({
+            title,
+            description,
+            location,
+            members
+        })
+        await problem.save()
+        return res.status(200).json({
+            success:true,
+            message:'create problem successfully',
+            problem
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"ineternal server error in create problem"
+        })
+        
+    }
+}
+
+
+// join problems
