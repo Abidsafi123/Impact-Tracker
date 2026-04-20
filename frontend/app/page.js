@@ -1,8 +1,17 @@
+import Timeline from "@/components/Timeline"
+
  
 
- const Homepage = () => {
+
+const Homepage = () => {
   return (
-    <div>page</div>
+    <div>
+   <Timeline />
+       
+
+    </div>
+
+
   )
 }
 export default Homepage
