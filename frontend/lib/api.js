@@ -1,9 +1,9 @@
 import axios from "axios";
-const api_url = "http://localhost:3000/api";
+const api_url = "http://localhost:3000/api/problems";
 
 export const getAllProblems = async () => {
     try {
-        const response = await axios.get(`${api_url}/problems`, {
+        const response = await axios.get(`${api_url}`, {
             cache: "no-store",
         });
         return response.data;
@@ -16,7 +16,7 @@ export const getAllProblems = async () => {
 
 export const getProblemById = async (id) => {
     try {
-        const response = await axios.get(`${api_url}/problems/${id}`, {
+        const response = await axios.get(`${api_url}/${id}`, {
             cache: "no-store",
         });
         return response.data;
@@ -29,7 +29,7 @@ export const getProblemById = async (id) => {
 
 export const createProblem = async (data) => {
     try {
-        const response = await axios.post(`${api_url}/problems`, data, {
+        const response = await axios.post(`${api_url}`, data, {
             cache: "no-store",
         });
         return response.data;
@@ -41,7 +41,7 @@ export const createProblem = async (data) => {
 
 export const joinProblem = async (id, status) => {
     try {
-        const response = await axios.put(`${api_url}/problems/${id}`, { status }, {
+        const response = await axios.put(`${api_url}/${id}`, { status }, {
             cache: "no-store",
         });
         return response.data;
