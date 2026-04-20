@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 
 const updateSchema = new mongoose.Schema({
-    title:{
-        type:String,
-        required:true
-    }
-},{timestamps:true})
+    title: String,
+    text: String
+}, { timestamps: true });
 const problemSchema = new mongoose.Schema({
     title:{
         type:String,

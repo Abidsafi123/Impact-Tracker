@@ -129,54 +129,49 @@ export const joinProlem = async (req, res) => {
     });
   }
 };
-
-// update problem status
-
 export const updateProblemStatus = async (req, res) => {
   try {
-    
     const { id } = req.params;
     const { status } = req.body;
 
-    if(!['pending','in-progress','completed'].includes(status)){
+    if (!['pending', 'in-progress', 'completed'].includes(status)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid satatus value",
+        message: "Invalid status value",
       });
-
-      const problem = await problemModel.findById(id);
-      if (!problem) {
-        return res.status(404).json({
-          success: false,
-          message: "Problem not found",
-        });
-      }
-      problem.status = status;
-      problem.updates.push({ text: `Status changed to ${status}` });
-      await problem.save();
-      return res.status(200).json({
-        success: true,
-        message: "Status changed successfully",
-        problem,
-      });
-
-      
     }
 
-    
- 
-     
+    const problem = await problemModel.findById(id);
+
+    if (!problem) {
+      return res.status(404).json({
+        success: false,
+        message: "Problem not found",
+      });
+    }
+
+    problem.status = status;
+    problem.updates.push({
+      title: "Status Updated",
+      text: `Status changed to ${status}`
+    });
+
+    await problem.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Status changed successfully",
+      problem,
+    });
 
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Internal server error in joining problem",
+      message: "Internal server error in updating status",
       error: error.message,
     });
   }
-};          
-
-
+};
 
 // Add progess update
 
