@@ -1,12 +1,12 @@
-import Timeline from "@/components/Timeline"
+import { getAllProblems } from "@/lib/api"
+import ProblemCard from "@/components/ProblemCard"
 
- 
 
-
-const Homepage = () => {
+const Homepage = async () => {
+  const problems = await getAllProblems()
   return (
     <div>
-   <Timeline />
+   
        
 
     </div>
