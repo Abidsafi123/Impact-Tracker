@@ -3,8 +3,8 @@ import {getProblems,getProblemById,createProblem,joinProlem,updateProblemStatus,
 const router = express.Router()
 
 router.get('/',getProblems)
-routter.get('/:id',getProblemById)
-roouter.post('/',createProblem)
+router.get('/:id',getProblemById)
+router.post('/',createProblem)
 router.post('/:id/join',joinProlem)
 router.post('/:id/status',updateProblemStatus)
 router.post('/:id/update',addProblemUpdate)
