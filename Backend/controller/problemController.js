@@ -174,3 +174,41 @@ export const updateProblemStatus = async (req, res) => {
     });
   }
 };          
+
+
+
+// Add progess update
+
+export const addProblemUpdate = async(req,res)=>{
+    try {
+        const{text} = req.body
+        const{id} = req.params
+        if(!text){
+            return res.status(400).json({
+                success:false,
+                message:"Update text is required"
+            })
+
+        }
+        const problem = await problemModel.findById(id)
+        if(!problem){
+            return res.status(404).json({
+                success:false,
+                message:"Problem not found"
+            })  
+        }
+        problem.updates.push({text})
+        await problem.save()
+        return res.status(200).json({
+            success:true,
+            message:"Update added successfully",
+            problem
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:'internal server error in add problem update'
+        })
+        
+    }
+}
