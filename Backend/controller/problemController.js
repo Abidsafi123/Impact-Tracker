@@ -1,31 +1,32 @@
 import problemModel from "../model/problem.js"
-export const getProblems = async (req,res)=>{
-    try {
-        
-        const problems = await problemModel.find().sort({createdAt:-1})
-        if(!prolems){
-            return res.status(404).json({
-                success:false,
-                message:'faile to fetch  problems by id',
-                problems
+export const getProblems = async (req, res) => {
+  try {
+    const problems = await problemModel.find().sort({ createdAt: -1 });
 
-
-            })
-            return res.status(200).json({
-                success:true,
-                message:'get problems successfully',    
-                problems
-            })
-        }
-    } catch (error) {
-        return res.status(500).json({
-            success:false,
-            message:'internal server error in get problems'
-        })
-        
+    if (!problems || problems.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No problems found in database",
+        problems: [],
+      });
     }
-}
 
+    return res.status(200).json({
+      success: true,
+      message: "Problems fetched successfully",
+      problems,
+    });
+
+  } catch (error) {
+    console.log("Error in getProblems:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error in get problems",
+      error: error.message,
+    });
+  }
+};
 // get problem by id
 
 export const getProblemById = async(req,res)=>{
