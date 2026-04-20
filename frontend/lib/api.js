@@ -37,9 +37,7 @@ export const createProblem = async (data) => {
 
 export const joinProblem = async (id, status) => {
     try {
-        const response = await axios.put(`${api_url}/${id}/join`, { status }, {
-            cache: "no-store",
-        });
+        await axios.post(`${api_url}/${id}/join`, { status });
         return response.data;
     } catch (error) {
         console.error("Error joining problem:", error);
@@ -50,9 +48,7 @@ export const joinProblem = async (id, status) => {
 
 export const addProblemUpdate = async (id, text) => {
     try {
-        const response = await axios.post(`${api_url}/${id}/updates`, { text }, {
-            cache: "no-store",
-        });
+        await axios.post(`${api_url}/${id}/update`, { text });
         return response.data;
     } catch (error) {
         console.error("Error adding problem update:", error);
@@ -64,9 +60,7 @@ export const addProblemUpdate = async (id, text) => {
 
 export const getProblemStatus = async (id) => {
     try {
-        const response = await axios.get(`${api_url}/${id}/status`, {
-            cache: "no-store",
-        });
+        await axios.post(`${api_url}/${id}/status`);
         return response.data;
     } catch (error) {
         console.error("Error fetching problem updates:", error);
