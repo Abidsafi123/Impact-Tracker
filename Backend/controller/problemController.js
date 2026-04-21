@@ -1,22 +1,13 @@
-import problemModel from "../model/problem.js"
+import problemModel from "../model/problem.js";
 export const getProblems = async (req, res) => {
   try {
     const problems = await problemModel.find().sort({ createdAt: -1 });
 
-    if (!problems || problems.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No problems found in database",
-        problems: [],
-      });
-    }
-
     return res.status(200).json({
       success: true,
       message: "Problems fetched successfully",
-      problems,
+      problems: problems || [],
     });
-
   } catch (error) {
     console.log("Error in getProblems:", error);
 
@@ -29,61 +20,69 @@ export const getProblems = async (req, res) => {
 };
 // get problem by id
 
-export const getProblemById = async(req,res)=>{
-    try {
-        const{id} = req.params
-        const problem = await problemModel.findById(id)
-        if(problem){
-            return res.status(200).json({
-                success:true,
-                message:'get problem by id successfully',
-                problem
-            })
-            
-        }
-        
-    } catch (error) {
-        return res.status(500).json({
-            success:false,  
-            message:'internal server error in get problem by id'    
-        })
-        
+export const getProblemById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const problem = await problemModel.findById(id);
+
+    if (!problem) {
+      return res.status(404).json({
+        success: false,
+        message: "Problem not found",
+      });
     }
-}
+
+    return res.status(200).json({
+      success: true,
+      message: "get problem by id successfully",
+      problem,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "internal server error in get problem by id",
+    });
+  }
+};
 
 // create a problems
 
-export const createProblem = async(req,res)=>{
-    try {
-        const{title,description,location,members} = req.body
-        if(!title||!description){
-            return res.status(400).json({
-                success:false,
-                message:'title and description are required'
-            })
-        }
-        const problem = new problemModel({
-            title,
-            description,
-            location,
-            members
-        })
-        await problem.save()
-        return res.status(200).json({
-            success:true,
-            message:'create problem successfully',
-            problem
-        })
-        
-    } catch (error) {
-        return res.status(500).json({
-            success:false,
-            message:"ineternal server error in create problem"
-        })
-        
-    }
-}
+export const createProblem = async (req, res) => {
+  try {
+    const { title, description, location } = req.body;
 
+    if (!title || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "title and description are required",
+      });
+    }
+
+    const problem = new problemModel({
+      title,
+      description,
+      location,
+
+      // 🔥 ADD IMAGE FROM MULTER
+      image: req.file ? req.file.path : null,
+    });
+
+    await problem.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "create problem successfully",
+      problem,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "internal server error in create problem",
+      error: error.message,
+    });
+  }
+};
 
 // join problem
 export const joinProlem = async (req, res) => {
@@ -111,7 +110,7 @@ export const joinProlem = async (req, res) => {
     // check if user already joined
     if (!problem.members.includes(name)) {
       problem.members.push(name);
-      problem.updates.push({text:`${name} joined the problem`})
+      problem.updates.push({ text: `${name} joined the problem` });
       await problem.save();
     }
 
@@ -120,7 +119,6 @@ export const joinProlem = async (req, res) => {
       message: "Joined problem successfully",
       problem,
     });
-
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -134,7 +132,7 @@ export const updateProblemStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!['pending', 'in-progress', 'completed'].includes(status)) {
+    if (!["pending", "in-progress", "completed"].includes(status)) {
       return res.status(400).json({
         success: false,
         message: "Invalid status value",
@@ -153,7 +151,7 @@ export const updateProblemStatus = async (req, res) => {
     problem.status = status;
     problem.updates.push({
       title: "Status Updated",
-      text: `Status changed to ${status}`
+      text: `Status changed to ${status}`,
     });
 
     await problem.save();
@@ -163,7 +161,6 @@ export const updateProblemStatus = async (req, res) => {
       message: "Status changed successfully",
       problem,
     });
-
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -175,36 +172,34 @@ export const updateProblemStatus = async (req, res) => {
 
 // Add progess update
 
-export const addProblemUpdate = async(req,res)=>{
-    try {
-        const{text} = req.body
-        const{id} = req.params
-        if(!text){
-            return res.status(400).json({
-                success:false,
-                message:"Update text is required"
-            })
-
-        }
-        const problem = await problemModel.findById(id)
-        if(!problem){
-            return res.status(404).json({
-                success:false,
-                message:"Problem not found"
-            })  
-        }
-        problem.updates.push({text})
-        await problem.save()
-        return res.status(200).json({
-            success:true,
-            message:"Update added successfully",
-            problem
-        })
-    } catch (error) {
-        return res.status(500).json({
-            success:false,
-            message:'internal server error in add problem update'
-        })
-        
+export const addProblemUpdate = async (req, res) => {
+  try {
+    const { text } = req.body;
+    const { id } = req.params;
+    if (!text) {
+      return res.status(400).json({
+        success: false,
+        message: "Update text is required",
+      });
     }
-}
+    const problem = await problemModel.findById(id);
+    if (!problem) {
+      return res.status(404).json({
+        success: false,
+        message: "Problem not found",
+      });
+    }
+    problem.updates.push({ text });
+    await problem.save();
+    return res.status(200).json({
+      success: true,
+      message: "Update added successfully",
+      problem,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "internal server error in add problem update",
+    });
+  }
+};
